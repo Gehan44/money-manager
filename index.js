@@ -1,7 +1,6 @@
 const express = require('express');
 const session  = require('express-session')
 const app = express();
-//const ejs = require('ejs');
 const sql = require('mysql2');
 const sqlConfig = require('./sqlConfig');
 const multer = require('multer');
@@ -29,8 +28,6 @@ async function initializeDatabase() {
         console.error("Error connecting to the database:", err);
     }
 }
-
-initializeDatabase();
 
 // Page Control
 const loginController = require('./controllers/loginController');
@@ -70,7 +67,7 @@ app.get('/t_form',usermiddleware,t_formController);
 app.post('/t_form/submit',usermiddleware,upload.single('t_image'),t_formFunction);
 app.post('/t_form/delete',usermiddleware,t_deleteFunction);
 
-app.get('/search',searchFunction)
+app.get('/search',usermiddleware,searchFunction)
 
 let port = process.env.PORT || 3000;
 app.listen(port, () => {

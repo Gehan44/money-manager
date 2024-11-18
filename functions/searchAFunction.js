@@ -5,7 +5,6 @@ module.exports = async function runDashboard(userData) {
   try {
     const pool = await mysql.createPool(sqlConfig);
 
-    // Query to fetch transactions for the logged-in user
     let script = `
       SELECT * 
       FROM accounts
@@ -13,7 +12,6 @@ module.exports = async function runDashboard(userData) {
       ORDER BY id DESC LIMIT 30
     `;
 
-    // Execute the query, binding the userData.id to prevent SQL injection
     const [result] = await pool.query(script, [userData.id]);
     return result;
 

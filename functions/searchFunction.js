@@ -8,7 +8,6 @@ module.exports = async function (req, res) {
     const userData = req.session.user;
     const { month, year, t_type, account_id, limit } = req.query;
 
-    // If no filters are provided, use the default dashboard data
     if (month === '' && year === '' && t_type === '' && account_id === '' && limit === '') {
       const allResults = await runDashboard(userData);
       const allAccounts = await accountDashboard(userData);
@@ -18,7 +17,6 @@ module.exports = async function (req, res) {
       const totalReceivePrice = allResults.reduce((sum, transaction) => {
         return transaction.t_type === 'Receive' ? sum + (transaction.t_price || 0) : sum;
       }, 0);
-      // Only render once, passing all necessary data
       return res.render('home', { 
         userData,
         allResults,
@@ -28,11 +26,9 @@ module.exports = async function (req, res) {
       });
     }
 
-    // Prepare the base SQL query for filtered data
     let merch = 'SELECT * FROM transactions WHERE user_id = ?';
     const params = [userData.id];
 
-    // Apply filters based on the provided query parameters
     if (month) {
       merch += ' AND MONTH(created_at) = ?';
       params.push(month);
@@ -50,23 +46,16 @@ module.exports = async function (req, res) {
       params.push(account_id);
     }
 
-    // Add ORDER BY clause to the query
     merch += ' ORDER BY created_at DESC';
 
-    // If a limit is specified, apply it
     if (limit) {
       merch += ' LIMIT ?';
       params.push(parseInt(limit));
     }
 
-    // Execute the query with the provided parameters
     const pool = await mysql.createPool(sqlConfig);
     const [allResults] = await pool.query(merch, params);
-
-    // Get the account data
     const allAccounts = await accountDashboard(userData);
-
-    // Calculate the total pay and receive amounts
     const totalPayPrice = allResults.reduce((sum, transaction) => {
       return transaction.t_type === 'Pay' ? sum + (transaction.t_price || 0) : sum;
     }, 0);
@@ -74,7 +63,6 @@ module.exports = async function (req, res) {
       return transaction.t_type === 'Receive' ? sum + (transaction.t_price || 0) : sum;
     }, 0);
 
-    // Render the view with the filtered data
     res.render('home', { 
       userData,
       allResults,

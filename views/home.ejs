@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>W3.CSS Template</title>
+<title>Money Manager</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -62,8 +62,8 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
         <div class="w3-container">
          <h4 class="w3-center">Summary</h4>
          <hr>
-         <p><i class="fa fa-fw w3-margin-right w3-text-theme"></i>Sum Of Pay: <%=totalPayPrice%></p>
-         <p><i class="fa fa-fw w3-margin-right w3-text-theme"></i>Sum Of Receive <%=totalReceivePrice%></p>
+         <p><i class="fa fa-fw w3-margin-right w3-text-theme"></i>Sum Pay: <%=totalPayPrice%></p>
+         <p><i class="fa fa-fw w3-margin-right w3-text-theme"></i>Sum Receive <%=totalReceivePrice%></p>
         </div>
       </div>
       <br>
@@ -154,10 +154,8 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
           <form class="needs-validation" action="/t_form/delete" method="POST" novalidate>
             <input type="hidden" name="id" value="<%= result.id %>">
             <h4><%= result.t_title %></h4><br>
-            <h5><%= result.t_type %></h5>
-            <hr class="w3-clear">
-            <h5><%= result.t_price %></h5>
-            <p><%= result.t_note %></p>
+            <h4><%= result.t_type %>: <%= result.t_price %></h4>
+            <h4>Note: <%= result.t_note %></h4>
             <div class="w3-row-padding" style="margin:0 -16px">
               <% if (result.t_image) { %> <!-- Check if t_image exists -->
                 <div class="w3-half">

@@ -31,7 +31,7 @@ module.exports = async function createUser(req, res) {
             console.log('User created successfully');
         }
 
-        res.status(200).send('User created or updated successfully');
+        res.redirect('/');
     } catch (error) {
         console.error('Error creating user:', error);
         res.status(500).send('An error occurred while creating the user');
